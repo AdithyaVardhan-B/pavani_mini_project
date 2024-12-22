@@ -119,6 +119,7 @@
             background-color: rgba(0, 128, 128, 1);
         }
 
+        /* Chatbot Styles */
         .chat-toggle-button {
             position: fixed;
             bottom: 20px;
@@ -127,6 +128,7 @@
             height: 60px;
             border-radius: 50%;
             background-color: #003366;
+            /* Deep blue */
             color: white;
             display: flex;
             align-items: center;
@@ -139,47 +141,93 @@
 
         .chat-toggle-button:hover {
             background-color: #1e4f91;
+            /* Lighter blue */
             transform: scale(1.1);
         }
 
         .chat-toggle-button:active {
             background-color: #00214d;
+            /* Darker blue */
             transform: scale(0.95);
         }
 
         .chat {
             display: none;
             flex-direction: column;
-            height: 73vh;
-            max-width: 500px;
-            margin: auto;
+            position: fixed;
+            bottom: 90px;
+            right: 20px;
+            width: 90%;
+            max-width: 400px;
+            max-height: 70vh;
             border-radius: 10px;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
             background-color: #ffffff;
             overflow: hidden;
-            position: fixed;
-            bottom: 80px;
-            right: 20px;
-            z-index: 1000;
+            height: 422px;
         }
 
         .chat-header {
-            padding: 15px 20px;
+            padding: 15px;
             background-color: #003366;
+            /* Deep blue */
             color: white;
-            font-size: 1.5rem;
+            font-size: 1.2rem;
             font-weight: bold;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
+            text-align: center;
         }
 
         .chat-body {
             flex-grow: 1;
-            padding: 10px 20px;
+            padding: 10px 15px;
             overflow-y: auto;
             background-color: #d9e7f7;
-            border-bottom: 1px solid #ddd;
+            /* Light blue */
+        }
+
+        .chat-body::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .chat-body::-webkit-scrollbar-thumb {
+            background-color: #003366;
+            border-radius: 3px;
+        }
+
+        .chat-body::-webkit-scrollbar-track {
+            background-color: #d9e7f7;
+        }
+
+        .chat-message {
+            margin: 10px 0;
+            padding: 10px 12px;
+            border-radius: 18px;
+            width: fit-content;
+            max-width: 75%;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        .chat-message.user {
+            background-color: #007bff;
+            /* Bright blue */
+            color: white;
+            align-self: flex-end;
+            border-radius: 18px 18px 0 18px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            margin-left: auto;
+            /* Ensures the message is pushed to the right */
+            text-align: right;
+            /* Align text inside the bubble to the right */
+        }
+
+
+        .chat-message.bot {
+            background-color: #ffffff;
+            color: black;
+            align-self: flex-start;
+            border-radius: 18px 18px 18px 0;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
         }
 
         .chat-footer {
@@ -187,29 +235,61 @@
             background-color: #ffffff;
             display: flex;
             align-items: center;
+            border-top: 1px solid #ddd;
         }
 
         .chat-footer input {
             flex-grow: 1;
-            padding: 10px;
+            padding: 8px 12px;
             margin-right: 5px;
             border-radius: 23px;
+            border: 1px solid #ddd;
+            font-size: 0.9rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .chat-footer input:focus {
+            border-color: #007bff;
+            outline: none;
         }
 
         .chat-footer button {
-            padding: 10px 15px;
+            padding: 8px 10px;
             background-color: #003366;
             color: white;
             border: none;
             border-radius: 50%;
             cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .chat-footer button:hover {
+            background-color: #1e4f91;
+        }
+
+        .chat-footer button:active {
+            background-color: #00214d;
+        }
+
+        /* Media Query for Smaller Screens */
+        @media (max-width: 600px) {
+            .chat {
+                width: 95%;
+                right: 2.5%;
+                bottom: 80px;
+                max-height: 60vh;
+            }
+
+            .chat-header {
+                font-size: 1rem;
+            }
         }
     </style>
 </head>
 
 <body>
     <!-- Image Background -->
-    <img class="image-background" src="img1.webp" alt="">
+    <img class="image-background" src="img1 .webp" alt="">
     <div class="overlay"></div>
     <div class="container">
         <div class="input-box">
@@ -321,11 +401,11 @@
                     let result = JSON.parse(answer)
                     document.getElementById('output-name').textContent = name;
                     document.getElementById('output-domain').textContent = domain;
-                    document.getElementById('output-confidence').textContent = result["Overall Confidence"]+"%";
-                    document.getElementById('social-confidence').textContent = result["Social Confidence"]+"%";
-                    document.getElementById('ethical-confidence').textContent = result["Ethical Confidence"]+"%";
-                    document.getElementById('environmental-confidence').textContent = result["Environmental Confidence"]+"%";
-                    document.getElementById('economic-confidence').textContent = result["Economic Confidence"]+"%";
+                    document.getElementById('output-confidence').textContent = result["Overall Confidence"] + "%";
+                    document.getElementById('social-confidence').textContent = result["Social Confidence"] + "%";
+                    document.getElementById('ethical-confidence').textContent = result["Ethical Confidence"] + "%";
+                    document.getElementById('environmental-confidence').textContent = result["Environmental Confidence"] + "%";
+                    document.getElementById('economic-confidence').textContent = result["Economic Confidence"] + "%";
                     document.getElementById('output-box').style.display = 'block';
                 } catch (error) {
                     console.error("Failed to generate response:", error);
@@ -378,6 +458,12 @@
                 messageElement.textContent = "Sorry, Something went wrong"
             }
         }
+        messageInput.addEventListener('keydown', (event) => {
+            if (event.key === 'Enter') {
+                event.preventDefault(); // Prevent default form submission behavior
+                sendButton.click(); // Trigger the send button click event
+            }
+        });
 
 
 
