@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ethical Analysis of Technological Impact on Society</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body,
+        html {
+            width: 100%;
+            height: 100%;
+            overflow-y: scroll;
+            /* Allow scrolling */
+            background: transparent;
+            font-family: Arial, sans-serif;
+            /* Clean typography */
+            padding-bottom: 20px;
+            /* Prevent content from being cut off */
+        }
+
+        /* Image Background with Animation */
+        .image-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.5;
+            /* Background image transparency */
+            animation: floatEffect 8s infinite linear;
+        }
+
+        /* Color Overlay with Opacity */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 128, 128, 0.4);
+            pointer-events: none;
+        }
+
+        /* Keyframe Animation */
+        @keyframes floatEffect {
+            0% {
+                transform: scale(1) translate(0, 0);
+            }
+
+            25% {
+                transform: scale(1.02) translate(-10px, 10px);
+            }
+
+            50% {
+                transform: scale(1.04) translate(10px, -10px);
+            }
+
+            75% {
+                transform: scale(1.02) translate(-10px, -10px);
+            }
+
+            100% {
+                transform: scale(1) translate(0, 0);
+            }
+        }
+
+        /* Box with Heading */
+        .header-box {
+            position: relative;
+            margin-top: 50px;
+            text-align: center;
+            background-color: rgba(0, 128, 128, 0.6);
+            padding: 20px;
+            border: 2px solid rgba(0, 128, 128, 0.9);
+            border-radius: 8px;
+            opacity: 0.8;
+            max-width: 60%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .header-box h1 {
+            font-size: 2rem;
+            color: #000000;
+        }
+
+        /* Description Box Below Header */
+        .description-box {
+            margin-top: 40px;
+            text-align: center;
+            padding: 20px;
+            background-color: rgba(0, 128, 128, 0.18);
+            /* Lighter shade */
+            border: 2px solid rgba(0, 128, 128, 1);
+            border-radius: 8px;
+            opacity: 0.85;
+            width: 80%;
+            margin-left: auto;
+            margin-right: auto;
+            font-size: 1.3rem;
+            color: #010101;
+            line-height: 1.6;
+        }
+
+        /* Example Box for Input/Output */
+        .description-box1 {
+            margin-top: 40px;
+            padding: 20px;
+            background-color: rgba(0, 128, 128, 0.18);
+            border: 2px solid rgba(0, 128, 128, 1);
+            border-radius: 8px;
+            opacity: 0.85;
+            width: 80%;
+            margin-left: auto;
+            margin-right: auto;
+            font-size: 1.3rem;
+            color: #010101;
+            line-height: 1.6;
+            text-align: left;
+            /* Left align the input/output example */
+        }
+
+        .description-box1 p {
+            margin-bottom: 10px;
+            /* Space between paragraphs */
+        }
+
+        .arrow {
+            color: #fff;
+            font-size: 1.2rem;
+            animation: moveArrow 1.0s infinite;
+            display: inline-block;
+            margin-right: 5px;
+        }
+
+        @keyframes moveArrow {
+            0% {
+                transform: translateX(0);
+            }
+
+            50% {
+                transform: translateX(10px);
+            }
+
+            100% {
+                transform: translateX(0);
+            }
+        }
+
+        .link {
+            color: #fff;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        /* Chatbot Styles */
+        .chat-toggle-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: #003366;
+            /* Deep blue */
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .chat-toggle-button:hover {
+            background-color: #1e4f91;
+            /* Lighter blue */
+            transform: scale(1.1);
+        }
+
+        .chat-toggle-button:active {
+            background-color: #00214d;
+            /* Darker blue */
+            transform: scale(0.95);
+        }
+
+        .chat {
+            display: none;
+            flex-direction: column;
+            height: 73vh;
+            max-width: 500px;
+            margin: auto;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            background-color: #ffffff;
+            overflow: hidden;
+            position: fixed;
+            bottom: 80px;
+            right: 20px;
+            z-index: 1000;
+        }
+
+        .chat-header {
+            padding: 15px 20px;
+            background-color: #003366;
+            /* Deep blue */
+            color: white;
+            font-size: 1.5rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .chat-body {
+            flex-grow: 1;
+            padding: 10px 20px;
+            overflow-y: auto;
+            background-color: #d9e7f7;
+            /* Light blue for background */
+            border-bottom: 1px solid #ddd;
+            width: 423px;
+            height: 50px;
+        }
+
+        .chat-message.user {
+            background-color: #007bff;
+            /* Bright blue */
+            color: white;
+            align-self: flex-end;
+        }
+
+        .chat-message.bot {
+            background-color: #ffffff;
+            /* White bubble for bot */
+            color: black;
+            align-self: flex-start;
+        }
+
+        .chat-footer {
+            padding: 10px;
+            background-color: #ffffff;
+            display: flex;
+            align-items: center;
+        }
+
+        .chat-footer input {
+            flex-grow: 1;
+            padding: 10px;
+            margin-right: 5px;
+            border-radius: 23px;
+        }
+
+        .chat-footer button {
+            padding: 10px 15px;
+            background-color: #003366;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Image Background -->
+    <img class="image-background" src="img1 .webp" alt="Background Image">
+
+    <!-- Color Overlay -->
+    <div class="overlay"></div>
+
+    <!-- Main Content -->
+    <div class="header-box">
+        <h1>Ethical Analysis of Technological Impact on Society</h1>
+    </div>
+    <div class="description-box">
+        <p>This platform provides an ethical analysis of technological innovations, examining their potential impacts on
+            society. It evaluates how technologies may affect economic, social, ethical, and environmental factors. By
+            simulating different scenarios, it identifies high-risk situations and assesses the overall impact. The
+            analysis also considers the effects on various stakeholder groups and explores interactions across different
+            domains. Ultimately, it helps determine whether a technology is likely to be beneficial or problematic for
+            society, fostering responsible development and decision-making.</p>
+    </div>
+    <div class="description-box1">
+        <p><b>Here is an example of how it works:</b></p>
+        <p><b>The input that user should provide:</b></p>
+        <p>Technology Name: AI-Powered Traffic Management</p>
+        <p>Domain: Transportation</p>
+        <p>Potential Impacts: Economic Growth (Economic), Traffic Reduction (Social), Environmental Benefits (Environmental), Privacy Concerns (Ethical)</p>
+        <p>Stakeholder Groups:Government,Commuters,Environmental Groups,Privacy Advocates</p>
+
+        <p><b>The Output that it gives:</b></p>
+        <p>Technology Name: AI-Powered Traffic Management</p>
+        <p>Domain: Transportation</p>
+
+        <p>Economic Confidence: ~85%</p>
+        <p>Social Confidence: ~70%</p>
+        <p>Environmental Confidence: ~90%</p>
+
+        <p>Ethical Confidence: ~50%</p>
+        <p>Overall Confidence: ~73.75%</p>
+        <p>The confidence percentage is a measure of how certain the analysis is about the technology's impact, and in
+            this case, 73.75% indicates a relatively high level of confidence.</p>
+        <p><b>If you want know your technology is proven or unproven<span class="arrow">➔</span><a href="input.html"
+                    class="link"> click here</a></b></p>
+    </div>
+
+    <!-- Chatbot -->
+    <div class="chat-toggle-button" id="chat-toggle">💬</div>
+    <div class="chat" id="chat-container">
+        <div class="chat-header">Chatbot</div>
+        <div class="chat-body" id="chat-body"></div>
+        <div class="chat-footer">
+            <input type="text" id="message-input" placeholder="Type a message...">
+            <button id="send-button">➤</button>
+        </div>
+    </div>
+
+    <script type="importmap">
+        {
+          "imports": {
+            "@google/generative-ai": "https://esm.run/@google/generative-ai"
+          }
+        }
+    </script>
+
+    <script type="module">
+        import { GoogleGenerativeAI } from "@google/generative-ai"
+        const toggleButton = document.getElementById('chat-toggle');
+        const chatContainer = document.getElementById('chat-container');
+        const chatBody = document.getElementById('chat-body');
+        const messageInput = document.getElementById('message-input');
+        const sendButton = document.getElementById('send-button');
+
+        
+
+        toggleButton.addEventListener('click', () => {
+            chatContainer.style.display = chatContainer.style.display === 'flex' ? 'none' : 'flex';
+        });
+
+        const generateResponse = async (userMessage,messageElement) => {
+            try {
+                const answer = await runModel(userMessage,messageElement);
+                
+                messageElement.innerHTML = answer;
+            } catch (error) {
+                console.error("Failed to generate response:", error);
+                messageElement.textContent = "Sorry, Something went wrong"
+            }
+        }
+
+
+        sendButton.addEventListener('click', () => {
+            const userMessage = messageInput.value.trim();
+            if (userMessage) {
+                const userBubble = document.createElement('div');
+                userBubble.classList.add('chat-message', 'user');
+                userBubble.textContent = userMessage;
+                //console.log(userMessage)
+                chatBody.appendChild(userBubble);
+                messageInput.value = '';
+
+                setTimeout(() => {
+                    const botBubble = document.createElement('div');
+                    botBubble.classList.add('chat-message', 'bot');
+                    generateResponse(userMessage,botBubble);
+                    chatBody.appendChild(botBubble);
+                }, 1000);
+            }
+        });
+        const genAI = new GoogleGenerativeAI("AIzaSyAeahj9xuIR-3bfn10T8akZp513otFjgC4");
+        const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+        async function runModel(prompt,messageElement) {
+            const result = await model.generateContent(prompt);
+            //console.log(result)
+            let fullResponse=result.response.text()
+            fullResponse = fullResponse.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>');
+            fullResponse = fullResponse.replace(/\n/g, '<br>');
+            let halftext = ''
+            for (let i = 0; i < fullResponse.length; i++) {
+                halftext += fullResponse[i]  // Append letter by letter to the full response
+
+                messageElement.innerHTML = halftext;
+
+                // Add a small delay between each letter (e.g., 5ms)
+                await new Promise(resolve => setTimeout(resolve, 5));
+            }
+            //console.log(fullResponse)
+            return fullResponse
+        }
+    </script>
+</body>
+
+</html>

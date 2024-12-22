@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ethical Impact Simulator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            /* background-image: url(img1.webp); */
+        }
+
+        body,
+        html {
+            width: 100%;
+            height: 100%;
+            overflow-y: scroll;
+            background: transparent;
+            font-family: Arial, sans-serif;
+            padding-bottom: 20px;
+            background-image: url(img1.webp);
+        }
+
+        .image-background {
+            background-image: url(img1.webp);
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.5;
+            animation: floatEffect 8s infinite linear;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 128, 128, 0.4);
+            pointer-events: none;
+        }
+
+        @keyframes floatEffect {
+            0% {
+                transform: scale(1) translate(0, 0);
+            }
+
+            25% {
+                transform: scale(1.02) translate(-10px, 10px);
+            }
+
+            50% {
+                transform: scale(1.04) translate(10px, -10px);
+            }
+
+            75% {
+                transform: scale(1.02) translate(-10px, -10px);
+            }
+
+            100% {
+                transform: scale(1) translate(0, 0);
+            }
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            margin-top: 36px;
+        }
+
+        .input-box {
+            background-color: rgba(0, 128, 128, 0.6);
+            padding: 20px;
+            border-radius: 10px;
+            width: 60%;
+            color: #fff;
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .input-box input,
+        .input-box textarea,
+        .input-box button {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid rgba(0, 128, 128, 0.8);
+            font-size: 1rem;
+        }
+
+        .output-box {
+            background-color: rgba(0, 128, 128, 0.7);
+            padding: 20px;
+            border-radius: 10px;
+            width: 60%;
+            color: #fff;
+            font-size: 1.1rem;
+            opacity: 0.9;
+            display: none;
+        }
+
+        .input-box button {
+            background-color: rgba(0, 0, 0, 0.8);
+            color: white;
+            cursor: pointer;
+        }
+
+        .input-box button:hover {
+            background-color: rgba(0, 128, 128, 1);
+        }
+
+        .chat-toggle-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: #003366;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .chat-toggle-button:hover {
+            background-color: #1e4f91;
+            transform: scale(1.1);
+        }
+
+        .chat-toggle-button:active {
+            background-color: #00214d;
+            transform: scale(0.95);
+        }
+
+        .chat {
+            display: none;
+            flex-direction: column;
+            height: 73vh;
+            max-width: 500px;
+            margin: auto;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            background-color: #ffffff;
+            overflow: hidden;
+            position: fixed;
+            bottom: 80px;
+            right: 20px;
+            z-index: 1000;
+        }
+
+        .chat-header {
+            padding: 15px 20px;
+            background-color: #003366;
+            color: white;
+            font-size: 1.5rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .chat-body {
+            flex-grow: 1;
+            padding: 10px 20px;
+            overflow-y: auto;
+            background-color: #d9e7f7;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .chat-footer {
+            padding: 10px;
+            background-color: #ffffff;
+            display: flex;
+            align-items: center;
+        }
+
+        .chat-footer input {
+            flex-grow: 1;
+            padding: 10px;
+            margin-right: 5px;
+            border-radius: 23px;
+        }
+
+        .chat-footer button {
+            padding: 10px 15px;
+            background-color: #003366;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Image Background -->
+    <img class="image-background" src="img1 .webp" alt="">
+    <div class="overlay"></div>
+    <div class="container">
+        <div class="input-box">
+            <h2>Enter Technology Details</h2>
+            <label for="tech-name">Technology Name:</label>
+            <input type="text" id="tech-name" placeholder="e.g., Autonomous Vehicles">
+            <label for="tech-domain">Domain:</label>
+            <input type="text" id="tech-domain" placeholder="e.g., Transportation">
+            <label for="tech-impacts">Potential Impacts (comma-separated):</label>
+            <textarea id="tech-impacts" rows="3"
+                placeholder="e.g., Economic growth, Traffic safety, Ethical dilemmas"></textarea>
+            <label for="tech-stakeholders">Stakeholder Groups (comma-separated):</label>
+            <textarea id="tech-stakeholders" rows="3"
+                placeholder="e.g., Manufacturers, Consumers, Environmentalists"></textarea>
+            <button id="simulate-btn">Simulate</button>
+        </div>
+        <div class="output-box" id="output-box">
+            <h3>Simulation Output</h3>
+            <p><strong>Technology Name:</strong> <span id="output-name"></span></p>
+            <p><strong>Domain:</strong> <span id="output-domain"></span></p>
+            <p><strong>Environmental Confidence:</strong> <span id="environmental-confidence"></span></p>
+            <p><strong>Economic Confidence:</strong> <span id="economic-confidence"></span></p>
+            <p><strong>Ethical Confidence:</strong> <span id="ethical-confidence"></span></p>
+            <p><strong>Social Confidence:</strong> <span id="social-confidence"></span></p>
+            <p><strong>Overall Confidence:</strong> <span id="output-confidence"></span></p>
+            <!-- <p><strong>Technology Status:</strong> <span id="output-status"></span></p>
+            <p><strong>High-Risk Scenarios:</strong> <span id="output-high-risk"></span></p> -->
+        </div>
+    </div>
+    <div class="chat-toggle-button" id="chat-toggle">💬</div>
+    <div class="chat" id="chat-container">
+        <div class="chat-header">Chatbot</div>
+        <div class="chat-body" id="chat-body"></div>
+        <div class="chat-footer">
+            <input type="text" id="message-input" placeholder="Type a message...">
+            <button id="send-button">➤</button>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+    <script type="importmap">
+        {
+          "imports": {
+            "@google/generative-ai": "https://esm.run/@google/generative-ai"
+          }
+        }
+    </script>
+
+
+
+    <script type="module">
+        import { GoogleGenerativeAI } from "@google/generative-ai"
+        document.getElementById('simulate-btn').addEventListener('click', function () {
+            // console.log("Print 1");
+            const name = document.getElementById('tech-name').value;
+            const domain = document.getElementById('tech-domain').value;
+            const impacts = document.getElementById('tech-impacts').value.split(',');
+            const stakeholders = document.getElementById('tech-stakeholders').value.split(',');
+
+            let promptforresponse = "Technology Name: " + name + "\nDomain: " + domain + "\nPotential Impacts: " + impacts + "\nStakeholder Groups: " + stakeholders;
+
+
+
+            const genAIv2 = new GoogleGenerativeAI("AIzaSyCKN31AqMPm9EI2C0Xh8WLU2N6qPrRpvhw");
+            const modelv2 = genAIv2.getGenerativeModel({ model: "gemini-1.5-flash" });
+
+            const generationConfig = {
+                temperature: 0,
+                topP: 0.95,
+                topK: 40,
+                maxOutputTokens: 8192,
+                responseMimeType: "text/plain",
+            };
+
+            async function runModelv2(promptforresponse) {
+                const parts = [
+                    { text: "1st example is the correct format, use it for all your responses, do not give ~ or % in your responses, the string output should be convertible to JSON directly. Dont include '''json  in your response, donot under any circumstances use any other format other than format in examples below. Generate floating point number with 2 decimal accuracy, try to use floating integers and use random decimals whenever possible, rather than 0's." },
+                    { text: "input: Technology Name: AI-Powered Traffic Management\nDomain: TransportationPotential \nImpacts: Economic Growth (Economic), Traffic Reduction (Social), Environmental Benefits (Environmental), Privacy Concerns (Ethical)\nStakeholder Groups:Government,Commuters,Environmental Groups,Privacy Advocaates" },
+                    { text: "output: { \"Economic Confidence\": 80,\n\"Social Confidence\": 75,\n\"Environmental Confidence\": 85,\n\"Ethical Confidence\": 60,\n\"Overall Confidence\": 75};" },
+                    { text: "input: Technology: Autonomous Vehicles\nDomain: Transportation\nPotential Impacts: Economic growth, Traffic safety, Environmental concerns, Ethical dilemmas\nStakeholder Groups: Manufacturers, Regulators, Consumers, Environmentalists" },
+                    { text: "output: { \"Economic Confidence\": 85,\n\"Social Confidence\": 80,\n\"Environmental Confidence\": 90,\n\"Ethical Confidence\": 65,\n\"Overall Confidence\": 80};" },
+                    { text: "input: Technology\n  Name: AI in Hiring (Automated Recruitment)\n \n \n  Domain:\n  Human Resources\n \n \n  Potential Impacts: Increased Efficiency (Economic), Bias Reduction (Social), Job\n  Losses (Environmental), Discrimination Risks (Ethical)\n \n \n  Stakeholder Groups: Employers, Job Seekers, HR Professionals, Labor Unions" },
+                    { text: "output: { \"Economic Confidence\": 80,\n\"Social Confidence\": 70,\n\"Environmental Confidence\": 60,\n\"Ethical Confidence\": 50,\n\"Overall Confidence\": 65};" },
+                    { text: "input: Technology\n  Name: Facial Recognition for Surveillance\n \n \n  Domain:\n  Security\n \n \n  Potential Impacts: Increased Security (Economic), Public Safety (Social),\n  Privacy Violations (Environmental), Civil Liberties Concerns (Ethical)\n \n \n  Stakeholder Groups: Governments, Law Enforcement, Civil Rights Groups, Consumers" },
+                    { text: "output: { \"Economic Confidence\": 75,\n\"Social Confidence\": 70,\n\"Environmental Confidence\": 50,\n\"Ethical Confidence\": 40,\n\"Overall Confidence\": 60};" },
+                    { text: "input: Technology\n  Name: Autonomous Weapons Systems\n \n \n  Domain:\n  Defense\n \n \n  Potential Impacts: Military Efficiency (Economic), Safety (Social), Ethical\n  Dilemmas (Environmental), Civilian Casualties (Ethical)\n \n \n  Stakeholder Groups: Governments, Military, Human Rights Organizations, General\n  Public" },
+                    { text: "output: { \"Economic Confidence\": 70,\n\"Social Confidence\": 60,\n\"Environmental Confidence\": 40,\n\"Ethical Confidence\": 30,\n\"Overall Confidence\": 50};" },
+                    { text: "input: " + promptforresponse },
+                ];
+
+                const result = await modelv2.generateContent({
+                    contents: [{ role: "user", parts }],
+                    generationConfig,
+                });
+                return result.response.text();
+            }
+
+            const generateResponse = async (userMessage) => {
+                try {
+                    const answer = await runModelv2(userMessage);
+                    //console.log(answer)
+                    let result = JSON.parse(answer)
+                    document.getElementById('output-name').textContent = name;
+                    document.getElementById('output-domain').textContent = domain;
+                    document.getElementById('output-confidence').textContent = result["Overall Confidence"]+"%";
+                    document.getElementById('social-confidence').textContent = result["Social Confidence"]+"%";
+                    document.getElementById('ethical-confidence').textContent = result["Ethical Confidence"]+"%";
+                    document.getElementById('environmental-confidence').textContent = result["Environmental Confidence"]+"%";
+                    document.getElementById('economic-confidence').textContent = result["Economic Confidence"]+"%";
+                    document.getElementById('output-box').style.display = 'block';
+                } catch (error) {
+                    console.error("Failed to generate response:", error);
+                }
+            }
+
+            generateResponse(promptforresponse)
+            // console.log(result)
+
+
+            // if (typeof result === 'string') {
+            //     document.getElementById('output-name').textContent = result;
+            // } else if (typeof resultv2 === 'object' && resultv2 !== null) {
+            //     document.getElementById('output-name').textContent = name;
+            //     document.getElementById('output-domain').textContent = impacts;
+            //     document.getElementById('output-confidence').textContent = result["Overall Confidence"];
+            //     document.getElementById('social-confidence').textContent = result["Social Confidence"];
+            //     document.getElementById('ethical-confidence').textContent = result["Ethical Confidence"];
+            //     document.getElementById('environmental-confidence').textContent = result["Environmental Confidence"];
+            //     document.getElementById('economic-confidence').textContent = result["Economic Confidence"];
+            //     document.getElementById('output-box').style.display = 'block';
+            // }
+        });
+    </script>
+
+
+
+
+
+    <script type="module">
+        import { GoogleGenerativeAI } from "@google/generative-ai"
+        const toggleButton = document.getElementById('chat-toggle');
+        const chatContainer = document.getElementById('chat-container');
+        const chatBody = document.getElementById('chat-body');
+        const messageInput = document.getElementById('message-input');
+        const sendButton = document.getElementById('send-button');
+
+
+
+        toggleButton.addEventListener('click', () => {
+            chatContainer.style.display = chatContainer.style.display === 'flex' ? 'none' : 'flex';
+        });
+
+        const generateResponse = async (userMessage, messageElement) => {
+            try {
+                const answer = await runModel(userMessage, messageElement);
+
+            } catch (error) {
+                console.error("Failed to generate response:", error);
+                messageElement.textContent = "Sorry, Something went wrong"
+            }
+        }
+
+
+
+
+        sendButton.addEventListener('click', () => {
+            const userMessage = messageInput.value.trim();
+            if (userMessage) {
+                const userBubble = document.createElement('div');
+                userBubble.classList.add('chat-message', 'user');
+                userBubble.textContent = userMessage;
+                //console.log(userMessage)
+                chatBody.appendChild(userBubble);
+                messageInput.value = '';
+
+                setTimeout(() => {
+                    const botBubble = document.createElement('div');
+                    botBubble.classList.add('chat-message', 'bot');
+                    generateResponse(userMessage, botBubble);
+                    chatBody.appendChild(botBubble);
+                }, 1000);
+            }
+        });
+        const genAI = new GoogleGenerativeAI("AIzaSyAeahj9xuIR-3bfn10T8akZp513otFjgC4");
+        const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+        async function runModel(prompt, messageElement) {
+            const result = await model.generateContent(prompt);
+            //console.log(result)
+            let fullResponse = result.response.text()
+            fullResponse = fullResponse.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>');
+            fullResponse = fullResponse.replace(/\n/g, '<br>');
+            let halftext = ''
+            for (let i = 0; i < fullResponse.length; i++) {
+                halftext += fullResponse[i]  // Append letter by letter to the full response
+
+                messageElement.innerHTML = halftext;
+
+                // Add a small delay between each letter (e.g., 5ms)
+                await new Promise(resolve => setTimeout(resolve, 5));
+            }
+            //console.log(fullResponse)
+            return fullResponse
+        }
+    </script>
+</body>
+
+</html>
