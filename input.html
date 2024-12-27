@@ -439,7 +439,7 @@
                     document.getElementById('ethical-confidence').textContent = result["Ethical Confidence"] + "%";
                     document.getElementById('environmental-confidence').textContent = result["Environmental Confidence"] + "%";
                     document.getElementById('economic-confidence').textContent = result["Economic Confidence"] + "%";
-                    document.getElementById('economic-confidence').textContent = result["Description"];
+                    document.getElementById('reason-output').textContent = result["Description"];
                     document.getElementById('output-box').style.display = 'block';
                 } catch (error) {
                     console.error("Failed to generate response:", error);
